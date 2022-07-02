@@ -1,10 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using Boxed.AspNetCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using InvoiceGenerator.WebApi.Extensions;
 
 namespace InvoiceGenerator.WebApi;
@@ -12,7 +7,7 @@ namespace InvoiceGenerator.WebApi;
 [ExcludeFromCodeCoverage]
     public class Startup
     {
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }

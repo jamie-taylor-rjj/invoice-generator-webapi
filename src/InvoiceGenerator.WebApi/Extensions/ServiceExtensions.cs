@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using InvoiceGenerator.WebApi.Helpers;
 using InvoiceGenerator.BusinessLogic;
+using InvoiceGenerator.BusinessLogic.Mappers;
 using InvoiceGenerator.Domain;
 using InvoiceGenerator.ViewModels;
 

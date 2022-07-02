@@ -1,7 +1,7 @@
 using InvoiceGenerator.Domain.Models;
 using InvoiceGenerator.ViewModels;
 
-namespace InvoiceGenerator.BusinessLogic;
+namespace InvoiceGenerator.BusinessLogic.Mappers;
 
 public class ClientViewModelMapper : IMapper<ClientViewModel, Client>
 {

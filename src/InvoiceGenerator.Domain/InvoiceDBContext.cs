@@ -3,15 +3,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InvoiceGenerator.Domain
 {
-
     public class InvoiceDbContext : DbContext
     {
         public InvoiceDbContext(DbContextOptions<InvoiceDbContext> options) : base(options) { }
         public InvoiceDbContext() { }
 
-        public override int SaveChanges(bool acceptAllChangesOnSuccess = true)
+        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            return base.SaveChanges(acceptAllChangesOnSuccess);
+            return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
         public DbSet<Client> Clients => Set<Client>();

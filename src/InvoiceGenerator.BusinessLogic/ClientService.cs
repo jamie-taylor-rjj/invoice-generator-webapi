@@ -40,7 +40,6 @@ namespace InvoiceGenerator.BusinessLogic
 
         public ClientViewModel AddClient(ClientCreationModel viewModel)
         {
-
             var client = _clientCreationViewModelMapper.Convert(viewModel);
 
             _clientRepository.Add(client);
@@ -66,7 +65,7 @@ namespace InvoiceGenerator.BusinessLogic
 
             return new PagedResponse<ClientViewModel>
             {
-                Data = page.Select(_clientViewModelMapper.Convert).ToList(),
+                Data = page.AsEnumerable().Select(_clientViewModelMapper.Convert).ToList(),
                 PageNumber = pageNumber,
                 PageSize = page.Count(),
                 TotalPages = totalPages,
@@ -74,9 +73,9 @@ namespace InvoiceGenerator.BusinessLogic
             };
         }
 
-        public ClientViewModel? GetById(Guid Id)
+        public ClientViewModel? GetById(Guid id)
         {
-            var client = _clientRepository.GetAll().FirstOrDefault(c => Guid.Equals(c.ClientId, Id));
+            var client = _clientRepository.GetAll().FirstOrDefault(c => Equals(c.ClientId, id));
             if (client == null)
             {
                 return null;
@@ -85,12 +84,12 @@ namespace InvoiceGenerator.BusinessLogic
             return _clientViewModelMapper.Convert(client);
         }
 
-        public async Task DeleteById(Guid Id)
+        public async Task DeleteById(Guid id)
         {
-            var client = _clientRepository.GetAll().FirstOrDefault(c => Guid.Equals(c.ClientId, Id));
+            var client = _clientRepository.GetAll().FirstOrDefault(c => Guid.Equals(c.ClientId, id));
             if (client == null)
             {
-                throw new ArgumentException($"Could not find {nameof(Client)} with Id: {Id}");
+                throw new ArgumentException($"Could not find {nameof(Client)} with Id: {id}");
             }
             await _clientRepository.Delete(client);
         }
