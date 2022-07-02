@@ -54,7 +54,7 @@ jobs:
     
     
     - name: Run tests
-      run: dotnet test tests/InvoiceGenerator.BusinessLogicTests/InvoiceGenerator.BusinessLogicTests.csproj --configuration Release --no-build
+      run: dotnet test tests/InvoiceGenerator.BusinessLogicTests/InvoiceGenerator.BusinessLogicTests.csproj --configuration Release --no-build --collect:"XPlat Code Coverage" --results-directory ./coverage
 
     - name: Copy Coverage To Known Location
       run: cp coverage/**/coverage.cobertura.xml coverage.cobertura.xml
@@ -70,7 +70,7 @@ jobs:
         hide_complexity: true
         indicators: true
         output: both
-        thresholds: '0 60'
+        thresholds: '50 75'
     
     - name: Add Coverage PR Comment
       uses: marocchino/sticky-pull-request-comment@v2
