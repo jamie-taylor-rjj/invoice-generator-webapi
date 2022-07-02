@@ -6,7 +6,7 @@ using System.Net;
 namespace InvoiceGenerator.WebApi.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/")]
 public class ClientController : ControllerBase
 {
     private readonly IClientService _clientService;
@@ -32,7 +32,7 @@ public class ClientController : ControllerBase
     /// </remarks>
     /// <response code="200">a list of clients where found and retrieved as an array of ClientViewModel</response>
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    [HttpGet("/", Name = "GetClientList")]
+    [HttpGet("[controller]/", Name = "GetClientList")]
     public async Task<ActionResult<IEnumerable<ClientViewModel>>> Get()
     {
         return new OkObjectResult((await _clientService.GetClients()).ToList());
@@ -52,7 +52,7 @@ public class ClientController : ControllerBase
     /// </remarks>
     /// <response code="200">a list of clients where found and retrieved as an array of ClientNameViewModel</response>
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    [HttpGet("/Names", Name="GetClientNames")]
+    [HttpGet("[controller]/names", Name="GetClientNames")]
     public async Task<ActionResult<IEnumerable<ClientNameViewModel>>> GetNames()
     {
         return new OkObjectResult(await _clientService.GetClientNames());
@@ -72,7 +72,7 @@ public class ClientController : ControllerBase
     /// <response code="200">The requested client as found and returned</response>
     /// <response code="404">The requested client could not be found</response>
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    [HttpGet("/{id}", Name="GetClientById")]
+    [HttpGet("[controller]/{id}", Name="GetClientById")]
     public async Task<IActionResult> GetClientById(Guid id)
     {
         var client = await _clientService.GetById(id);
@@ -94,7 +94,7 @@ public class ClientController : ControllerBase
     /// <response code="500">The new client could not be created</response>
     [ProducesResponseType(typeof(ClientViewModel), (int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    [HttpPost("/", Name="CreateNewClient")]
+    [HttpPost("[controller]/", Name="CreateNewClient")]
     public async Task<ActionResult> NewClient(ClientCreationModel viewModel)
     {
         var newClient = await _clientService.AddClient(viewModel);
@@ -113,7 +113,7 @@ public class ClientController : ControllerBase
     /// </returns>
     /// <response code="200">The pages list of ClientViewModels</response>
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    [HttpPost("/Page", Name="GetPageOfClients")]
+    [HttpGet("[controller]/page", Name="GetPageOfClients")]
     public async Task<PagedResponse<ClientViewModel>> GetPage(int pageNumber, int pageSize = 10)
     {
        return await _clientService.GetPage(pageNumber, pageSize);
@@ -122,14 +122,14 @@ public class ClientController : ControllerBase
     /// <summary>
     /// Used to delete a single Client from the system. THIS IS IRREVOCABLE
     /// </summary>
-    /// <param name="Id" example="3fa85f64-5717-4562-b3fc-2c963f66afa6"></param>
+    /// <param name="id" example="3fa85f64-5717-4562-b3fc-2c963f66afa6"></param>
     /// <returns></returns>
     /// <response code="200">A client with the supplied ID was found and deleted</response>
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    [HttpDelete("/", Name="DeleteClientById")]
-    public async Task<ActionResult> DeleteById(Guid Id)
+    [HttpDelete("[controller]/", Name="DeleteClientById")]
+    public async Task<ActionResult> DeleteById(Guid id)
     {
-        await _clientService.DeleteById(Id);
+        await _clientService.DeleteById(id);
         return new OkResult();
     }
 }

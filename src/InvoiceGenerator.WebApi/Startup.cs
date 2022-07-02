@@ -7,12 +7,14 @@ namespace InvoiceGenerator.WebApi;
 [ExcludeFromCodeCoverage]
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Environment = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public virtual void ConfigureServices(IServiceCollection services)
@@ -22,8 +24,12 @@ namespace InvoiceGenerator.WebApi;
                 .AddCustomCors()
                 .AddControllers().Services
                 .AddTransientServices(connectionString)
-                .AddMappers()
-                .AddCustomSwagger();
+                .AddMappers();
+
+            if (Environment.IsDevelopment())
+            {
+                services.AddCustomSwagger();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,11 +47,14 @@ namespace InvoiceGenerator.WebApi;
                 // .UseAuthorization()
                 .UseCors("AllowAny")
                 .UseEndpoints(
-                    builder =>
-                    {
-                        builder.MapControllers().RequireCors("AllowAny");
-                    })
-                .UseSwagger()
-                .UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "InvoiceGenerator.WebApi v1"));
+                    builder => { builder.MapControllers().RequireCors("AllowAny"); })
+                .UseIf(
+                    env.IsDevelopment(), app => app.UseSwagger()
+                )
+                .UseIf(
+                    env.IsDevelopment(),
+                    app => app.UseSwaggerUI(c =>
+                        c.SwaggerEndpoint("/swagger/v1/swagger.json", "InvoiceGenerator.WebApi v1"))
+                );
         }
     }

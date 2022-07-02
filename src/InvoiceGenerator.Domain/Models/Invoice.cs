@@ -1,5 +1,8 @@
-﻿namespace InvoiceGenerator.Domain.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace InvoiceGenerator.Domain.Models
 {
+    [ExcludeFromCodeCoverage]
     public class Invoice
     {
         public Guid InvoiceId { get; set; }

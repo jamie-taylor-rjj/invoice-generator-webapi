@@ -1,8 +1,10 @@
-﻿using InvoiceGenerator.Domain.Models;
+﻿using System.Diagnostics.CodeAnalysis;
+using InvoiceGenerator.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace InvoiceGenerator.Domain
 {
+    [ExcludeFromCodeCoverage]
     public class InvoiceDbContext : DbContext
     {
         public InvoiceDbContext(DbContextOptions<InvoiceDbContext> options) : base(options) { }
