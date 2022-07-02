@@ -47,7 +47,7 @@ jobs:
       with:
         files: '**/appsettings.json'
       env:
-        ConnectionStrings.Default: ${{ secrets.CONNECTION_STRING }}
+        ConnectionStrings.invoiceConnectionString: ${{ secrets.CONNECTION_STRING }}
     
     - name: Build
       run: dotnet build --no-restore --configuration Release
