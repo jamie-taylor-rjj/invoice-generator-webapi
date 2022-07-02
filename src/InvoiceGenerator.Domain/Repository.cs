@@ -13,10 +13,10 @@ namespace InvoiceGenerator.Domain
             _entities = _dbContext.Set<T>();
         }
 
-        public int Add(T item)
+        public async Task<int> Add(T item)
         {
             _entities.Add(item);
-            return _dbContext.SaveChanges();
+            return await _dbContext.SaveChangesAsync();
         }
 
         public async Task<int> Delete(T item)
@@ -25,9 +25,9 @@ namespace InvoiceGenerator.Domain
             return await _dbContext.SaveChangesAsync();
         }
 
-        public List<T> GetAll()
+        public async Task<List<T>> GetAll()
         {
-            return _entities.ToList();
+            return await _entities.ToListAsync();
         }
     }
 }

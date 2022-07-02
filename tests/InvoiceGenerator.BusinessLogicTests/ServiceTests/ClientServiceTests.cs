@@ -11,7 +11,7 @@ namespace InvoiceGenerator.BusinessLogicTests.ServiceTests;
 public class ClientServiceTests
 {
     [Fact]
-    public void Given_A_Client_GetAll_Should_Return_At_Least_One_ClientViewModel()
+    public async Task Given_A_Client_GetAll_Should_Return_At_Least_One_ClientViewModel()
     {
         var clientId = Guid.NewGuid();
         var clientName = Guid.NewGuid().ToString();
@@ -30,7 +30,7 @@ public class ClientServiceTests
         };
         var clientsForMock = new List<Client> { client };
         var mockedRepository = new Mock<IRepository<Client>>();
-        mockedRepository.Setup(x => x.GetAll()).Returns(clientsForMock);
+        mockedRepository.Setup(x => x.GetAll()).ReturnsAsync(clientsForMock);
 
         var expectedOutput = new ClientViewModel
         {
@@ -50,7 +50,7 @@ public class ClientServiceTests
             null!);
         
         // Act
-        var result = sut.GetClients();
+        var result = await sut.GetClients();
         
         // Assert
         Assert.NotNull(result);
@@ -64,7 +64,7 @@ public class ClientServiceTests
     }
 
     [Fact]
-    public void Check_If_Created_List_Of_Client_Names_Matches_DataBase_Client_Names()
+    public async Task Check_If_Created_List_Of_Client_Names_Matches_DataBase_Client_Names()
     {
         //Arrange
         var clientId = Guid.NewGuid();
@@ -85,7 +85,7 @@ public class ClientServiceTests
         
         var clientNamesForMock = new List<Client> { client };
         var mockedRepository = new Mock<IRepository<Client>>();
-        mockedRepository.Setup(x => x.GetAll()).Returns(clientNamesForMock);
+        mockedRepository.Setup(x => x.GetAll()).ReturnsAsync(clientNamesForMock);
         
         var expectedOutput = new ClientNameViewModel
         {
@@ -102,7 +102,7 @@ public class ClientServiceTests
             null!);
         
         // Act
-        var result = sut.GetClientNames();
+        var result = await sut.GetClientNames();
         // Assert
         Assert.NotNull(result);
         Assert.IsAssignableFrom<List<ClientNameViewModel>>(result);
@@ -112,7 +112,7 @@ public class ClientServiceTests
     }
 
     [Fact]
-    public void Check_If_Client_Details_Are_Added_To_Database()
+    public async Task Check_If_Client_Details_Are_Added_To_Database()
     {
         //Arrange
         var expectedObjectsAltered = 1;
@@ -130,7 +130,7 @@ public class ClientServiceTests
             ContactEmail = contactEmail
         };
         var mockedRepository = new Mock<IRepository<Client>>();
-        mockedRepository.Setup(x => x.Add(It.IsAny<Client>())).Returns(expectedObjectsAltered);
+        mockedRepository.Setup(x => x.Add(It.IsAny<Client>())).ReturnsAsync(expectedObjectsAltered);
         
         var expectedDatabaseEntity = new Client
         {
@@ -162,7 +162,7 @@ public class ClientServiceTests
             mockedClientCreationModelMapper.Object);
         
         // Act
-        var result = sut.AddClient(viewModel);
+        var result = await sut.AddClient(viewModel);
         // Assert
         Assert.NotNull(result);
         Assert.IsAssignableFrom<ClientViewModel>(result);
@@ -175,7 +175,7 @@ public class ClientServiceTests
     }
     
     [Fact]
-    public void Given_A_Valid_ClientId_GetById_Should_Return_The_Matching_ClientViewModel()
+    public async Task Given_A_Valid_ClientId_GetById_Should_Return_The_Matching_ClientViewModel()
     {
         var clientId = Guid.NewGuid();
         var clientName = Guid.NewGuid().ToString();
@@ -194,7 +194,7 @@ public class ClientServiceTests
         };
         var clientsForMock = new List<Client> { client };
         var mockedRepository = new Mock<IRepository<Client>>();
-        mockedRepository.Setup(x => x.GetAll()).Returns(clientsForMock);
+        mockedRepository.Setup(x => x.GetAll()).ReturnsAsync(clientsForMock);
 
         var expectedOutput = new ClientViewModel
         {
@@ -214,7 +214,7 @@ public class ClientServiceTests
             null!);
         
         // Act
-        var result = sut.GetById(clientId);
+        var result = await sut.GetById(clientId);
         
         // Assert
         Assert.NotNull(result);
@@ -228,7 +228,7 @@ public class ClientServiceTests
     }
     
     [Fact]
-    public void Given_An_Invalid_ClientId_GetById_Should_Return_Null()
+    public async Task Given_An_Invalid_ClientId_GetById_Should_Return_Null()
     {
         var clientId = Guid.NewGuid();
         var clientName = Guid.NewGuid().ToString();
@@ -247,7 +247,7 @@ public class ClientServiceTests
         };
         var clientsForMock = new List<Client> { client };
         var mockedRepository = new Mock<IRepository<Client>>();
-        mockedRepository.Setup(x => x.GetAll()).Returns(clientsForMock);
+        mockedRepository.Setup(x => x.GetAll()).ReturnsAsync(clientsForMock);
 
         var sut = new ClientService(mockedRepository.Object,
             null!,
@@ -255,7 +255,7 @@ public class ClientServiceTests
             null!);
         
         // Act
-        var result = sut.GetById(Guid.NewGuid());
+        var result = await sut.GetById(Guid.NewGuid());
         
         // Assert
         Assert.Null(result);
@@ -281,7 +281,7 @@ public class ClientServiceTests
         };
         var clientsForMock = new List<Client> { client };
         var mockedRepository = new Mock<IRepository<Client>>();
-        mockedRepository.Setup(x => x.GetAll()).Returns(clientsForMock);
+        mockedRepository.Setup(x => x.GetAll()).ReturnsAsync(clientsForMock);
 
         var sut = new ClientService(mockedRepository.Object,
             null!,
@@ -315,7 +315,7 @@ public class ClientServiceTests
         };
         var clientsForMock = new List<Client> { client };
         var mockedRepository = new Mock<IRepository<Client>>();
-        mockedRepository.Setup(x => x.GetAll()).Returns(clientsForMock);
+        mockedRepository.Setup(x => x.GetAll()).ReturnsAsync(clientsForMock);
 
         var sut = new ClientService(mockedRepository.Object,
             null!,

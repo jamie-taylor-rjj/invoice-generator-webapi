@@ -7,11 +7,11 @@ namespace InvoiceGenerator.BusinessLogic
 {
     public interface IClientService
     {
-        ClientViewModel AddClient(ClientCreationModel viewModel);
-        List<ClientNameViewModel> GetClientNames();
-        List<ClientViewModel> GetClients();
-        ClientViewModel? GetById(Guid Id);
-        PagedResponse<ClientViewModel> GetPage(int pageNumber, int pageSize = 10);
+        Task<List<ClientViewModel>> GetClients();
+        Task<List<ClientNameViewModel>> GetClientNames();
+        Task<ClientViewModel> AddClient(ClientCreationModel viewModel);
+        Task<ClientViewModel?> GetById(Guid Id);
+        Task<PagedResponse<ClientViewModel>> GetPage(int pageNumber, int pageSize = 10);
         Task DeleteById(Guid Id);
     }
 }

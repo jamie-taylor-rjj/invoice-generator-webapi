@@ -33,9 +33,9 @@ public class ClientController : ControllerBase
     /// <response code="200">a list of clients where found and retrieved as an array of ClientViewModel</response>
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [HttpGet("/", Name = "GetClientList")]
-    public ActionResult<IEnumerable<ClientViewModel>> Get()
+    public async Task<ActionResult<IEnumerable<ClientViewModel>>> Get()
     {
-        return new OkObjectResult(_clientService.GetClients().ToList());
+        return new OkObjectResult((await _clientService.GetClients()).ToList());
     }
 
     /// <summary>
@@ -53,9 +53,9 @@ public class ClientController : ControllerBase
     /// <response code="200">a list of clients where found and retrieved as an array of ClientNameViewModel</response>
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [HttpGet("/Names", Name="GetClientNames")]
-    public ActionResult<IEnumerable<ClientNameViewModel>> GetNames()
+    public async Task<ActionResult<IEnumerable<ClientNameViewModel>>> GetNames()
     {
-        return new OkObjectResult(_clientService.GetClientNames());
+        return new OkObjectResult(await _clientService.GetClientNames());
     }
 
     /// <summary>
@@ -73,9 +73,9 @@ public class ClientController : ControllerBase
     /// <response code="404">The requested client could not be found</response>
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [HttpGet("/{id}", Name="GetClientById")]
-    public IActionResult GetClientById(Guid id)
+    public async Task<IActionResult> GetClientById(Guid id)
     {
-        var client = _clientService.GetById(id);
+        var client = await _clientService.GetById(id);
         if (client == null)
         {
             return new NotFoundResult();
@@ -95,9 +95,9 @@ public class ClientController : ControllerBase
     [ProducesResponseType(typeof(ClientViewModel), (int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [HttpPost("/", Name="CreateNewClient")]
-    public ActionResult NewClient(ClientCreationModel viewModel)
+    public async Task<ActionResult> NewClient(ClientCreationModel viewModel)
     {
-        var newClient = _clientService.AddClient(viewModel);
+        var newClient = await _clientService.AddClient(viewModel);
         return CreatedAtAction(nameof(GetClientById), new { id = newClient.ClientId }, newClient);
     }
 
@@ -114,9 +114,9 @@ public class ClientController : ControllerBase
     /// <response code="200">The pages list of ClientViewModels</response>
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [HttpPost("/Page", Name="GetPageOfClients")]
-    public PagedResponse<ClientViewModel> GetPage(int pageNumber, int pageSize = 10)
+    public async Task<PagedResponse<ClientViewModel>> GetPage(int pageNumber, int pageSize = 10)
     {
-       return _clientService.GetPage(pageNumber, pageSize);
+       return await _clientService.GetPage(pageNumber, pageSize);
     }
 
     /// <summary>
