@@ -33,4 +33,11 @@ public class ClientController : ControllerBase
     {
         return _clientService.AddClient(viewModel);
     }
+
+    [HttpPost("/Page")]
+    public PagedResponse<ClientViewModel> GetPage(int pageNumber, int pageSize = 10)
+    {
+       return _clientService.GetPage(pageNumber, pageSize);
+    }
+
 }

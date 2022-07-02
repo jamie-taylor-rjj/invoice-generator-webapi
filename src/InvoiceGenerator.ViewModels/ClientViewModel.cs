@@ -1,8 +1,7 @@
-﻿using InvoiceGenerator.Domain.Models;
-
-namespace InvoiceGenerator.ViewModels
+﻿namespace InvoiceGenerator.ViewModels
 {
-    public class ClientViewModel
+
+    public class ClientViewModel : IViewModel
     {
         public Guid ClientId { get; set;}
         public string ClientName { get; set; } = string.Empty;

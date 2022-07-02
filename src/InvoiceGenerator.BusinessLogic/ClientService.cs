@@ -1,8 +1,10 @@
 ﻿using InvoiceGenerator.Domain;
 using InvoiceGenerator.Domain.Models;
 using InvoiceGenerator.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace InvoiceGenerator.BusinessLogic
 {
@@ -30,7 +32,7 @@ namespace InvoiceGenerator.BusinessLogic
         public List<ClientNameViewModel> GetClientNames()
         {
             var clients = _clientRepository.GetAll();
-            return clients.Select(_clientNameViewModelMapper.Convert).ToList();;
+            return clients.Select(_clientNameViewModelMapper.Convert).ToList();
         }
 
         public int AddClient(ClientViewModel viewModel)
@@ -39,6 +41,33 @@ namespace InvoiceGenerator.BusinessLogic
             var client = _clientViewModelMapper.Convert(viewModel);
 
             return _clientRepository.Add(client);
+        }
+
+        // TODO move this to the repository, as it is a data access thing
+        public PagedResponse<ClientViewModel> GetPage(int pageNumber, int pageSize = 10)
+        {
+            var pageNumberToUse = pageNumber < 1
+                ? 1
+                : pageNumber;
+            
+            var clients = _clientRepository.GetAll().AsQueryable();
+
+            var totalCount = clients.Count();
+            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+            var page = clients
+                .OrderBy(c => c.ClientId)
+                .Skip((pageNumberToUse - 1) * pageSize)
+                .Take(pageSize);
+
+            return new PagedResponse<ClientViewModel>
+            {
+                Data = page.Select(_clientViewModelMapper.Convert).ToList(),
+                PageNumber = pageNumber,
+                PageSize = page.Count(),
+                TotalPages = totalPages,
+                TotalRecords = totalCount
+            };
         }
     }
 }
