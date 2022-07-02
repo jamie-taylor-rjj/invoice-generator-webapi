@@ -84,5 +84,15 @@ namespace InvoiceGenerator.BusinessLogic
             
             return _clientViewModelMapper.Convert(client);
         }
+
+        public async Task DeleteById(Guid Id)
+        {
+            var client = _clientRepository.GetAll().FirstOrDefault(c => Guid.Equals(c.ClientId, Id));
+            if (client == null)
+            {
+                throw new ArgumentException($"Could not find {nameof(Client)} with Id: {Id}");
+            }
+            await _clientRepository.Delete(client);
+        }
     }
 }

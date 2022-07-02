@@ -12,5 +12,6 @@ namespace InvoiceGenerator.BusinessLogic
         List<ClientViewModel> GetClients();
         ClientViewModel? GetById(Guid Id);
         PagedResponse<ClientViewModel> GetPage(int pageNumber, int pageSize = 10);
+        Task DeleteById(Guid Id);
     }
 }

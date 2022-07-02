@@ -19,6 +19,12 @@ namespace InvoiceGenerator.Domain
             return dbContext.SaveChanges();
         }
 
+        public async Task<int> Delete(T item)
+        {
+            entities.Remove(item);
+            return await dbContext.SaveChangesAsync();
+        }
+
         public List<T> GetAll()
         {
             return entities.ToList();

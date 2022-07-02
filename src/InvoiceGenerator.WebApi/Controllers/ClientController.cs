@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using InvoiceGenerator.BusinessLogic;
 using InvoiceGenerator.ViewModels;
-using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
 namespace InvoiceGenerator.WebApi.Controllers;
@@ -113,11 +112,24 @@ public class ClientController : ControllerBase
     /// with the requested number of items (if available) and data about how many pages are available
     /// </returns>
     /// <response code="200">The pages list of ClientViewModels</response>
-    [ProducesResponseType((int)HttpStatusCode.Created)]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
     [HttpPost("/Page", Name="GetPageOfClients")]
     public PagedResponse<ClientViewModel> GetPage(int pageNumber, int pageSize = 10)
     {
        return _clientService.GetPage(pageNumber, pageSize);
     }
 
+    /// <summary>
+    /// Used to delete a single Client from the system. THIS IS IRREVOCABLE
+    /// </summary>
+    /// <param name="Id" example="3fa85f64-5717-4562-b3fc-2c963f66afa6"></param>
+    /// <returns></returns>
+    /// <response code="200">A client with the supplied ID was found and deleted</response>
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [HttpDelete("/", Name="DeleteClientById")]
+    public async Task<ActionResult> DeleteById(Guid Id)
+    {
+        await _clientService.DeleteById(Id);
+        return new OkResult();
+    }
 }
