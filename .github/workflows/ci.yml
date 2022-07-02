@@ -54,7 +54,7 @@ jobs:
     
     
     - name: Run tests
-      run: dotnet test --configuration Release --no-build
+      run: dotnet test tests/InvoiceGenerator.BusinessLogicTests/InvoiceGenerator.BusinessLogicTests.csproj --configuration Release --no-build
 
     - name: Copy Coverage To Known Location
       run: dotnet test --configuration Release --no-build --collect:"XPlat Code Coverage" --results-directory ./coverage
