@@ -264,3 +264,6 @@ paket-files/
 
 # Generated Database
 *.db
+
+# Test runs
+**/*.cobertura.xml
