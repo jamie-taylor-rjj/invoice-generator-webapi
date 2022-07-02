@@ -1,5 +1,9 @@
 # InvoiceGenerator.WebApi
 
+| Test coverage | Build status |
+|---------|---------|
+| ![Code Coverage](https://img.shields.io/badge/Code%20Coverage-64%25-yellow?style=flat) | [![Run all tests](https://github.com/jamie-taylor-rjj/invoice-generator-webapi/actions/workflows/ci.yml/badge.svg)](https://github.com/jamie-taylor-rjj/invoice-generator-webapi/actions/workflows/ci.yml) |
+
 ## User Secrets
 
 In order to hide the connection string from config (as this is an open source repo), the connection string has been hidden in a [User Secret](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets). All user secrets are loaded in _AFTER_ appsettings.json files, so this works brilliantly for local development.
