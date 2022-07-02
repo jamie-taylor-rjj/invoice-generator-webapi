@@ -1,4 +1,4 @@
-name: 'Run all tests'
+name: 'Build and Deploy'
 
 ## Only runs when someone pushes to main or PRs against main or develop
 on:

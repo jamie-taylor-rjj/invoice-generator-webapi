@@ -4,14 +4,17 @@ name: 'Run all tests'
 on:
   push:
     branches:
-      - main
       - develop
+      - bugfix/*
+      - feature/*
     paths-ignore:
       - '**/*.md'
   pull_request:
     branches:
       - main
       - develop
+      - bugfix/*
+      - feature/*
     paths-ignore:
       - '**/*.md'
   workflow_dispatch:
