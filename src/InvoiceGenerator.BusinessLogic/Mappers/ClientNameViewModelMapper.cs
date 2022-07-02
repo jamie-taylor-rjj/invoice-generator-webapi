@@ -16,3 +16,19 @@ public class ClientNameViewModelMapper : IMapper<ClientNameViewModel, Client>
         Id = destination.ClientId
     };
 }
+
+public class ClientCreationViewModelMapper : IMapper<ClientCreationModel, Client>
+{
+    public Client Convert(ClientCreationModel source) => new Client
+    {
+        ClientAddress = source.ClientAddress,
+        ClientName = source.ClientName,
+        ContactEmail = source.ContactEmail,
+        ContactName = source.ContactName
+    };
+
+    public ClientCreationModel Convert(Client destination)
+    {
+        throw new System.NotImplementedException();
+    }
+}

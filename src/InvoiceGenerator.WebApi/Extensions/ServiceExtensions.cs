@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 using InvoiceGenerator.WebApi.Helpers;
 using InvoiceGenerator.BusinessLogic;
 using InvoiceGenerator.Domain;
-using Microsoft.EntityFrameworkCore;
 using InvoiceGenerator.ViewModels;
 
 namespace InvoiceGenerator.WebApi.Extensions;
@@ -49,7 +49,8 @@ namespace InvoiceGenerator.WebApi.Extensions;
         public static IServiceCollection AddMappers(this IServiceCollection services) =>
             services
                 .AddTransient<IMapper<ClientViewModel, Domain.Models.Client>, ClientViewModelMapper>()
-                .AddTransient<IMapper<ClientNameViewModel, Domain.Models.Client>, ClientNameViewModelMapper>();
+                .AddTransient<IMapper<ClientNameViewModel, Domain.Models.Client>, ClientNameViewModelMapper>()
+                .AddTransient<IMapper<ClientCreationModel, Domain.Models.Client>, ClientCreationViewModelMapper>();
 
         public static IServiceCollection AddCustomSwagger(this IServiceCollection services)
         {

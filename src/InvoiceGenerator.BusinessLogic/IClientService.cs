@@ -7,10 +7,10 @@ namespace InvoiceGenerator.BusinessLogic
 {
     public interface IClientService
     {
-        int AddClient(ClientViewModel viewModel);
+        ClientViewModel AddClient(ClientCreationModel viewModel);
         List<ClientNameViewModel> GetClientNames();
         List<ClientViewModel> GetClients();
-        ClientViewModel GetById(Guid Id);
+        ClientViewModel? GetById(Guid Id);
         PagedResponse<ClientViewModel> GetPage(int pageNumber, int pageSize = 10);
     }
 }

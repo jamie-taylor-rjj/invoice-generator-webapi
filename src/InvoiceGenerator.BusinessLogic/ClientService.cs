@@ -13,14 +13,17 @@ namespace InvoiceGenerator.BusinessLogic
         private readonly IRepository<Client> _clientRepository;
         private readonly IMapper<ClientViewModel, Client> _clientViewModelMapper;
         private readonly IMapper<ClientNameViewModel, Client> _clientNameViewModelMapper;
+        private readonly IMapper<ClientCreationModel, Client> _clientCreationViewModelMapper;
 
         public ClientService(IRepository<Client> clientRepository,
                 IMapper<ClientViewModel, Client> clientViewModelMapper,
-                IMapper<ClientNameViewModel, Client> clientNameViewModelMapper)
+                IMapper<ClientNameViewModel, Client> clientNameViewModelMapper,
+                IMapper<ClientCreationModel, Client> clientCreationViewModelMapper)
         {
             _clientRepository = clientRepository;
             _clientViewModelMapper = clientViewModelMapper;
             _clientNameViewModelMapper = clientNameViewModelMapper;
+            _clientCreationViewModelMapper = clientCreationViewModelMapper;
         }
 
         public List<ClientViewModel> GetClients()
@@ -35,12 +38,13 @@ namespace InvoiceGenerator.BusinessLogic
             return clients.Select(_clientNameViewModelMapper.Convert).ToList();
         }
 
-        public int AddClient(ClientViewModel viewModel)
+        public ClientViewModel AddClient(ClientCreationModel viewModel)
         {
 
-            var client = _clientViewModelMapper.Convert(viewModel);
+            var client = _clientCreationViewModelMapper.Convert(viewModel);
 
-            return _clientRepository.Add(client);
+            _clientRepository.Add(client);
+            return _clientViewModelMapper.Convert(client);
         }
 
         // TODO move this to the repository, as it is a data access thing
@@ -70,12 +74,12 @@ namespace InvoiceGenerator.BusinessLogic
             };
         }
 
-        public ClientViewModel GetById(Guid Id)
+        public ClientViewModel? GetById(Guid Id)
         {
             var client = _clientRepository.GetAll().FirstOrDefault(c => Guid.Equals(c.ClientId, Id));
             if (client == null)
             {
-                throw new ArgumentException($"Could not find Client with provided Id {Id}");
+                return null;
             }
             
             return _clientViewModelMapper.Convert(client);
