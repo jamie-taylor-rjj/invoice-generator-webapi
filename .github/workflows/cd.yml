@@ -79,7 +79,7 @@ jobs:
 
   build:
 
-    needs: tests
+    needs: test
 
     runs-on: ubuntu-latest
 
