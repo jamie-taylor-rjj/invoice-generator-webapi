@@ -45,17 +45,22 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration Release
     
-    
     - name: Run tests
-      run: dotnet test tests/InvoiceGenerator.BusinessLogicTests/InvoiceGenerator.BusinessLogicTests.csproj --configuration Release --no-build --collect:"XPlat Code Coverage" --results-directory ./coverage
-
-    - name: Copy Coverage To Known Location
-      run: cp coverage/**/coverage.cobertura.xml coverage.cobertura.xml
+      run: dotnet test --configuration Release --no-build --collect:"XPlat Code Coverage" --results-directory ./coverage
+    
+    - name: ReportGenerator
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.9
+      with:
+        reports: '**/*.cobertura.xml'
+        targetdir: 'coveragereport'
+        reporttypes: 'HtmlInline;Cobertura'
+        verbosity: 'Info' # The verbosity level of the log messages. Values: Verbose, Info, Warning, Error, Off
+        toolpath: 'reportgeneratortool' # Default directory for installing the dotnet tool.
 
     - name: Code Coverage Summary Report
       uses: irongut/CodeCoverageSummary@v1.2.0
       with:
-        filename: coverage.cobertura.xml
+        filename: coveragereport/Cobertura.xml
         badge: true
         fail_below_min: true
         format: markdown
