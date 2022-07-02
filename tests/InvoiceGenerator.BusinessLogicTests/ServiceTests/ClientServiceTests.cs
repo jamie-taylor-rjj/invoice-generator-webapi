@@ -291,10 +291,10 @@ public class ClientServiceTests
             null!);
         
         // Act
-        await sut.DeleteById(_clientId);
+        var response = await sut.DeleteById(_clientId);
         
         // Assert
-        // Nothing to assert, as an exception would be raised by Service Delete method
+        Assert.True(response);
     }
     
     [Fact]
@@ -319,11 +319,10 @@ public class ClientServiceTests
             null!);
         
         // Act
-        var exception = await Record.ExceptionAsync(() => sut.DeleteById(Guid.NewGuid()));
+        var response = await sut.DeleteById(Guid.NewGuid());
         
         // Assert
-        Assert.NotNull(exception);
-        Assert.IsAssignableFrom<ArgumentException>(exception);
+        Assert.False(response);
     }
     
     [Fact]

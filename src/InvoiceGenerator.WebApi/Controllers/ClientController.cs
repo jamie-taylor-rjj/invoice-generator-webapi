@@ -129,7 +129,7 @@ public class ClientController : ControllerBase
     [HttpDelete("[controller]/", Name="DeleteClientById")]
     public async Task<ActionResult> DeleteById(Guid id)
     {
-        await _clientService.DeleteById(id);
-        return new OkResult();
+        var response = await _clientService.DeleteById(id);
+        return response ? new OkResult() : new StatusCodeResult((int)HttpStatusCode.InternalServerError);
     }
 }

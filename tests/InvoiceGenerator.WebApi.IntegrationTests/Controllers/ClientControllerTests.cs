@@ -3,20 +3,37 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text;
 using InvoiceGenerator.ViewModels;
+using InvoiceGenerator.WebApi.IntegrationTests.Fixtures;
+using InvoiceGenerator.WebApi.IntegrationTests.Helpers;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
+using Xunit.Abstractions;
 
 namespace InvoiceGenerator.WebApi.IntegrationTests.Controllers;
 
 [ExcludeFromCodeCoverage]
-public class ClientControllerTests
+public class ClientControllerTests : IClassFixture<CustomWebApplicationFactory<Startup>>
 {
     private readonly HttpClient _client;
+    private readonly CustomWebApplicationFactory<Startup> _factory;
 
-    public ClientControllerTests()
+    // public ClientControllerTests()
+    // {
+    //     // var appFactory = new WebApplicationFactory<Startup>();
+    //     // _client = appFactory.CreateClient();
+    //     _client = CreateClient(new WebApplicationFactoryClientOptions
+    //     {
+    //         AllowAutoRedirect = false
+    //     });
+    // }
+
+    public ClientControllerTests(CustomWebApplicationFactory<Startup> factory)
     {
-        var appFactory = new WebApplicationFactory<Startup>();
-        _client = appFactory.CreateClient();
+        _factory = factory;
+        _client = factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false
+        });
     }
 
     [Fact]
@@ -56,7 +73,7 @@ public class ClientControllerTests
     public async Task When_Valid_Id_Given_To_GetById_Returns_A_ClientViewModel()
     {
         // Arrange
-        var clientId = Guid.Parse("ec0a75c1-a6ba-46c4-7c95-08da37f58cf0");
+        var clientId = Utilities.KnownGoodClientId;
         
         // Act
         var response = await _client.GetAsync($"api/client/{clientId}");

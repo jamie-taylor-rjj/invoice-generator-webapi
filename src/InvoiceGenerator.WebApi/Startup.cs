@@ -26,7 +26,7 @@ namespace InvoiceGenerator.WebApi;
                 .AddTransientServices(connectionString)
                 .AddMappers();
 
-            if (Environment.IsDevelopment() || Environment.IsProduction())
+            if (!Environment.IsEnvironment("IntegrationTesting"))
             {
                 services.AddCustomSwagger();
             }
@@ -49,11 +49,11 @@ namespace InvoiceGenerator.WebApi;
                 .UseEndpoints(
                     builder => { builder.MapControllers().RequireCors("AllowAny"); })
                 .UseIf(
-                    env.IsDevelopment() || env.IsProduction(),
+                    !env.IsEnvironment("IntegrationTesting"),
                     app => app.UseSwagger()
                 )
                 .UseIf(
-                    env.IsDevelopment() || env.IsProduction(),
+                    !env.IsEnvironment("IntegrationTesting"),
                     app => app.UseSwaggerUI(c =>
                         c.SwaggerEndpoint("/swagger/v1/swagger.json", "InvoiceGenerator.WebApi v1"))
                 );
