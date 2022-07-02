@@ -5,16 +5,13 @@ on:
   push:
     branches:
       - main
-      - develop
     paths-ignore:
       - '**/*.md'
   pull_request:
     branches:
       - main
-      - develop
     paths-ignore:
       - '**/*.md'
-  workflow_dispatch:
 
 env:
   DOTNET_NOLOGO: true                     # Disable the .NET logo
@@ -79,3 +76,66 @@ jobs:
       with:
         recreate: true
         path: code-coverage-results.md
+
+  build:
+
+    needs: tests
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+          include-prerelease: true
+      
+      - name: Install code level dependencies
+        run: dotnet restore
+
+      #substitute production appsettings entries to appsettings json file
+      - name: App Settings Variable Substitution
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: '**/appsettings.json'
+        env:
+          ConnectionStrings.invoiceConnectionString: ${{ secrets.CONNECTION_STRING }}
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+
+      - name: dotnet publish
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/app
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/app
+          retention-days: 5
+
+  deploy:
+
+    runs-on: ubuntu-latest
+    needs: build
+
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: .net-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'invoice-generator-webapi'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
