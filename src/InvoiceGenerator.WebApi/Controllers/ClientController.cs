@@ -45,6 +45,13 @@ public class ClientController : ControllerBase
         return _clientService.GetClientNames();
     }
 
+    [HttpGet("/{id}", Name="GetClientById")]
+    public ClientViewModel GetClientById(Guid id)
+    {
+        return _clientService.GetById(id);
+    }
+
+    [HttpPost("/", Name="CreateNewClient")]
     public int NewClient(ClientViewModel viewModel)
     {
         return _clientService.AddClient(viewModel);

@@ -69,5 +69,16 @@ namespace InvoiceGenerator.BusinessLogic
                 TotalRecords = totalCount
             };
         }
+
+        public ClientViewModel GetById(Guid Id)
+        {
+            var client = _clientRepository.GetAll().FirstOrDefault(c => Guid.Equals(c.ClientId, Id));
+            if (client == null)
+            {
+                throw new ArgumentException($"Could not find Client with provided Id {Id}");
+            }
+            
+            return _clientViewModelMapper.Convert(client);
+        }
     }
 }
