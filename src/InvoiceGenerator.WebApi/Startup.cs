@@ -24,7 +24,8 @@ namespace InvoiceGenerator.WebApi;
                 .AddCustomCors()
                 .AddControllers().Services
                 .AddTransientServices(connectionString)
-                .AddMappers();
+                .AddMappers()
+                .AddRazorPages();
 
             if (!Environment.IsEnvironment("IntegrationTesting"))
             {
@@ -48,7 +49,12 @@ namespace InvoiceGenerator.WebApi;
                 // .UseAuthorization()
                 .UseCors("AllowAny")
                 .UseEndpoints(
-                    builder => { builder.MapControllers().RequireCors("AllowAny"); })
+                    builder => {
+                        builder
+                            .MapControllers()
+                            .RequireCors("AllowAny");
+                        builder.MapRazorPages();
+                    })
                 .UseIf(
                     !env.IsEnvironment("IntegrationTesting"),
                     app => app.UseSwagger()
