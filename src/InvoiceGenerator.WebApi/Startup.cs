@@ -39,9 +39,10 @@ namespace InvoiceGenerator.WebApi;
                 .UseForwardedHeaders()
                 // .UseResponseCaching()
                 // .UseResponseCompression()
-                .UseIf(
-                    env.IsDevelopment(),
-                    app => app.UseDeveloperExceptionPage())
+                // .UseIf(
+                //     env.IsDevelopment(),
+                //     app => app.UseDeveloperExceptionPage())
+                .UseDeveloperExceptionPage()
                 .UseRouting()
                 // .UseAuthentication()
                 // .UseAuthorization()
