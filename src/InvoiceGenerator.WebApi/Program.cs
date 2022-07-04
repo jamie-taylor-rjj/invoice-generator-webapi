@@ -80,7 +80,6 @@ namespace InvoiceGenerator.WebApi
                     options.Limits.MaxRequestBodySize = 52428800; // 50 MB for now
                     options.Limits.MaxRequestHeadersTotalSize = 1048576;
                 })
-                .UseUrls("http://*:5001")
                 .UseStartup<Startup>();
 
         private static IConfigurationBuilder AddConfiguration(
